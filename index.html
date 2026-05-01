@@ -1706,26 +1706,958 @@
 
     /* ── V4: ANIMATED BADGE ──────────────────────────────── */
     @keyframes v4-badge-pop {
-      0% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.3);
-      }
-
-      100% {
-        transform: scale(1);
-      }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
     }
 
     .v4-badge-animate {
       animation: v4-badge-pop .3s ease;
     }
+
+    /* ══════════════════════════════════════════════════════
+       RESPONSIVE UPGRADE v8 — MOBILE & TABLET 2026
+    ══════════════════════════════════════════════════════ */
+
+    /* ── MOBILE TOPBAR ───────────────────────────────────── */
+    #mobile-topbar {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      z-index: 39;
+      background: var(--surface-1);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      padding: 0 12px;
+      gap: 10px;
+      backdrop-filter: blur(12px);
+    }
+
+    #mobile-topbar .mob-logo {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent-500), var(--accent-600));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    #mobile-topbar .mob-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 15px; font-weight: 700;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    #mobile-topbar .mob-btn {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-secondary);
+      transition: all .2s; flex-shrink: 0;
+      position: relative;
+    }
+
+    #mobile-topbar .mob-btn:active { transform: scale(0.92); }
+
+    #mob-cart-count {
+      position: absolute; top: -4px; right: -4px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--accent-500);
+      color: white; font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      display: none;
+    }
+
+    /* ── SIDEBAR OVERLAY ─────────────────────────────────── */
+    #sidebar-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 38;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+
+    #sidebar-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── MOBILE BOTTOM NAV ───────────────────────────────── */
+    #mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 64px;
+      z-index: 39;
+      background: var(--surface-1);
+      border-top: 1px solid var(--border);
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 4px;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .mob-nav-item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 3px; padding: 8px 12px; border-radius: 12px;
+      cursor: pointer; color: var(--text-muted);
+      font-size: 10px; font-weight: 600; font-family: 'Sora', sans-serif;
+      transition: all .2s; min-width: 52px; position: relative;
+      letter-spacing: .03em;
+    }
+
+    .mob-nav-item.active {
+      color: var(--accent-400);
+      background: rgba(34,197,94,0.08);
+    }
+
+    .mob-nav-item svg { transition: transform .2s; }
+    .mob-nav-item.active svg { transform: scale(1.1); }
+
+    .mob-nav-badge {
+      position: absolute; top: 4px; right: 8px;
+      width: 16px; height: 16px;
+      border-radius: 50%; background: var(--accent-500);
+      color: white; font-size: 9px; font-weight: 700;
+      display: none; align-items: center; justify-content: center;
+    }
+
+    /* ── MOBILE CART DRAWER ──────────────────────────────── */
+    #mobile-cart-drawer {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 50;
+      background: var(--surface-1);
+      border-radius: 24px 24px 0 0;
+      border-top: 1px solid var(--border-md);
+      padding: 0 16px 16px;
+      transform: translateY(100%);
+      transition: transform .35s cubic-bezier(.32, .72, 0, 1);
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.4);
+      max-height: 92vh;
+      overflow: hidden;
+      flex-direction: column;
+      padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    }
+
+    #mobile-cart-drawer.open {
+      transform: translateY(0);
+    }
+
+    #mobile-cart-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 49;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+
+    #mobile-cart-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mob-drawer-handle {
+      width: 40px; height: 4px; border-radius: 2px;
+      background: var(--border-md); margin: 12px auto 16px;
+    }
+
+    /* ── MOBILE CART FAB ─────────────────────────────────── */
+    #mobile-cart-fab {
+      display: none;
+      position: fixed; bottom: 76px; right: 16px; z-index: 40;
+      width: 56px; height: 56px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent-500), var(--accent-600));
+      border: none; cursor: pointer; color: white;
+      align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(34,197,94,0.45);
+      transition: all .2s; position: relative;
+    }
+
+    #mobile-cart-fab:active { transform: scale(0.92); }
+
+    #mob-fab-badge {
+      position: absolute; top: -5px; right: -5px;
+      min-width: 20px; height: 20px; border-radius: 10px;
+      background: #ef4444; color: white;
+      font-size: 10px; font-weight: 800;
+      display: none; align-items: center; justify-content: center;
+      padding: 0 4px; border: 2px solid var(--bg);
+      font-family: 'Sora', sans-serif;
+    }
+
+    /* ── POS SALES LAYOUT — RESPONSIVE GRID ─────────────── */
+    /* NOTE: #page-sales inherits display:none from .page and only shows when .active */
+    #page-sales.active {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* Product card mobile-optimized */
+    .pos-product-card {
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── RESPONSIVE TABLE → CARD on mobile ───────────────── */
+    .mobile-card-row {
+      display: none;
+    }
+
+    /* ── TABLET (≤ 1200px): sidebar narrower ─────────────── */
+    @media (max-width: 1200px) {
+      #sidebar { width: 200px; }
+      #main-content { margin-left: 200px; }
+      #page-sales.active { grid-template-columns: 1fr 300px; }
+    }
+
+    /* ── TABLET (≤ 1024px): sidebar overlay ──────────────── */
+    @media (max-width: 1024px) {
+      #sidebar {
+        transform: translateX(-100%);
+        transition: transform .3s cubic-bezier(.32,.72,0,1);
+        width: 260px;
+        z-index: 42;
+      }
+
+      #sidebar.open { transform: translateX(0); }
+
+      #sidebar-overlay { display: block; }
+
+      #main-content {
+        margin-left: 0 !important;
+        padding-top: 72px; /* space for topbar */
+      }
+
+      #mobile-topbar { display: flex; }
+
+      .topbar-desktop { display: none !important; }
+
+      /* Sales layout on tablet: stack vertically, cart at top */
+      #page-sales.active {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+      }
+
+      /* On tablet, show cart inline below products */
+      #page-sales > div:nth-child(2) {
+        position: sticky !important;
+        display: none; /* handled by drawer on tablet too */
+      }
+
+      #mobile-cart-fab { display: flex; }
+      #mobile-cart-overlay { display: block; }
+      #mobile-cart-drawer { display: flex; }
+
+      /* Stat cards responsive */
+      #page-dashboard .grid-cols-5 {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+
+      /* Table overflow scroll */
+      .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    }
+
+    /* ── MOBILE (≤ 768px): full mobile POS ───────────────── */
+    @media (max-width: 768px) {
+      #main-content {
+        padding: 72px 12px 80px !important;
+      }
+
+      /* Bottom nav */
+      #mobile-bottom-nav { display: flex; }
+
+      /* Toast position */
+      #toast-container { bottom: 76px; right: 12px; left: 12px; }
+      .toast { min-width: unset; max-width: 100%; }
+
+      /* Modal full screen */
+      .modal-box {
+        width: 100% !important; max-width: 100% !important;
+        border-radius: 24px 24px 0 0;
+        position: fixed; bottom: 0; left: 0; right: 0;
+        margin: 0; max-height: 92vh;
+      }
+
+      .modal-overlay { align-items: flex-end; }
+
+      /* Dashboard stats: 2 col */
+      #page-dashboard .grid-cols-5 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+      }
+
+      .stat-card { padding: 14px; }
+      .stat-card .font-display.text-3xl { font-size: 22px; }
+
+      /* Dashboard recent: stack */
+      #page-dashboard .grid-cols-2 {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Product grid on POS: 2 columns */
+      #pos-products-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+      }
+
+      /* Hide desktop cart panel */
+      #page-sales > div:nth-child(2) { display: none !important; }
+
+      /* Products table → card layout */
+      .data-table { display: block; }
+      .data-table thead { display: none; }
+      .data-table tbody { display: block; }
+      .data-table tbody tr {
+        display: flex; flex-wrap: wrap;
+        padding: 12px; margin-bottom: 8px;
+        border-radius: 12px;
+        background: var(--surface-2);
+        border: 1px solid var(--border) !important;
+        border-bottom: 1px solid var(--border) !important;
+      }
+      .data-table tbody td {
+        padding: 4px 8px; font-size: 13px;
+        border: none !important;
+      }
+      .data-table tbody td[data-label]::before {
+        content: attr(data-label) ': ';
+        font-size: 10px; color: var(--text-muted);
+        text-transform: uppercase; letter-spacing: .05em;
+        font-weight: 600; display: block; margin-bottom: 2px;
+      }
+
+      /* Reports tabs scroll */
+      .report-tab-btn { font-size: 12px; padding: 7px 12px; }
+
+      /* Page title */
+      #page-title { font-size: 18px !important; }
+
+      /* Form grids: single column */
+      .grid-cols-2 { grid-template-columns: 1fr !important; }
+      .grid-cols-3 { grid-template-columns: 1fr !important; }
+
+      /* Settings layout single col */
+      #page-settings .grid { grid-template-columns: 1fr !important; }
+
+      /* Hide global search in topbar on mobile */
+      #global-search-wrapper { display: none !important; }
+
+      /* POS search bar larger */
+      #pos-search { font-size: 16px !important; height: 48px; }
+
+      /* Cart items larger touch targets */
+      .cart-item-row { min-height: 64px; }
+
+      /* Qty buttons larger */
+      .qty-btn { min-width: 36px !important; min-height: 36px !important; font-size: 16px !important; }
+
+      /* Product cards: touch-optimized */
+      .pos-product-card { min-height: 120px !important; }
+
+      /* Buttons larger */
+      .btn-primary, .btn-secondary { min-height: 44px; }
+
+      /* Checkout button in drawer */
+      #mobile-checkout-btn { min-height: 56px; font-size: 16px; }
+
+      /* Input fields larger on mobile */
+      .input-field { height: 48px; font-size: 16px; }
+      select.input-field { height: 48px; }
+      textarea.input-field { height: auto; min-height: 80px; }
+
+      /* Table action buttons: larger */
+      .btn-edit, .btn-danger { padding: 8px 14px; font-size: 13px; }
+
+      /* Log entries */
+      .log-entry { flex-wrap: wrap; gap: 8px; }
+
+      /* Remove p-8 from main content header */
+      .topbar-desktop { display: none !important; }
+
+      /* col-span adjustments */
+      .col-span-2, .col-span-3, .col-span-4 {
+        grid-column: span 1 !important;
+      }
+    }
+
+    /* ── SMALL MOBILE (≤ 375px) ──────────────────────────── */
+    @media (max-width: 375px) {
+      #pos-products-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+      .stat-card { padding: 12px; }
+      .mob-nav-item { padding: 6px 8px; min-width: 44px; font-size: 9px; }
+    }
+
+    /* ── TOUCH IMPROVEMENTS ──────────────────────────────── */
+    @media (hover: none) and (pointer: coarse) {
+      .nav-item { padding: 12px 16px; }
+      .nav-item:hover { background: none; }
+      .pos-product-card:hover { transform: none; border-color: inherit; }
+      .card-hover:hover { transform: none; box-shadow: none; }
+    }
+
+    /* ── POS PRODUCT CARD: ENHANCED TOUCH ───────────────── */
+    .pos-product-card {
+      position: relative; cursor: pointer;
+      border-radius: 16px;
+      background: var(--surface-1);
+      border: 1.5px solid var(--border);
+      padding: 14px 12px;
+      display: flex; flex-direction: column; gap: 8px;
+      transition: all .2s; min-height: 110px;
+      justify-content: space-between;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .pos-product-card:active {
+      transform: scale(0.96);
+      border-color: var(--accent-500) !important;
+      background: rgba(34,197,94,0.05);
+    }
+
+    .pos-product-card .prod-name {
+      font-weight: 600; font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .pos-product-card .prod-price {
+      font-family: 'Sora', sans-serif;
+      font-size: 15px; font-weight: 700;
+      color: var(--accent-400);
+    }
+
+    .pos-product-card .prod-stock {
+      font-size: 11px; color: var(--text-muted);
+    }
+
+    .pos-product-card.out-of-stock {
+      opacity: 0.4; pointer-events: none;
+    }
+
+    .pos-product-card .prod-add-btn {
+      position: absolute; top: 10px; right: 10px;
+      width: 26px; height: 26px; border-radius: 8px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent-400);
+    }
+
+    /* ── MOBILE CART DRAWER INNER ────────────────────────── */
+    #mob-cart-items {
+      flex: 1; overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ── SEARCH PILL for mobile ──────────────────────────── */
+    #mob-search-sheet {
+      display: none;
+      position: fixed; top: 56px; left: 0; right: 0; z-index: 50;
+      background: var(--surface-1);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    #mob-search-sheet.open { display: block; }
+
+    /* ── QUICK ACTION BUTTONS — SALES PAGE ───────────────── */
+    #pos-quick-actions {
+      display: none;
+      gap: 8px; margin-bottom: 12px;
+      overflow-x: auto; padding-bottom: 4px;
+      scrollbar-width: none; -ms-overflow-style: none;
+    }
+    #pos-quick-actions::-webkit-scrollbar { display: none; }
+
+    @media (max-width: 1024px) {
+      #pos-quick-actions { display: flex; }
+    }
+
+    .pos-quick-btn {
+      flex-shrink: 0;
+      padding: 8px 14px; border-radius: 20px;
+      background: var(--surface-2); border: 1px solid var(--border-md);
+      color: var(--text-secondary); font-size: 12px; font-weight: 600;
+      cursor: pointer; white-space: nowrap;
+      transition: all .2s; font-family: 'Sora', sans-serif;
+    }
+
+    .pos-quick-btn.active {
+      background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(16,163,74,0.08));
+      border-color: rgba(34,197,94,0.3); color: var(--accent-400);
+    }
+
+    /* ── NUMPAD FOR QUANTITY INPUT ───────────────────────── */
+    @media (max-width: 768px) {
+      .mob-numpad {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .mob-numpad-btn {
+        height: 52px; border-radius: 12px;
+        background: var(--surface-2); border: 1px solid var(--border);
+        color: var(--text-primary); font-size: 20px; font-weight: 600;
+        cursor: pointer; font-family: 'Sora', sans-serif;
+        transition: all .15s; display: flex;
+        align-items: center; justify-content: center;
+      }
+
+      .mob-numpad-btn:active { background: var(--surface-3); transform: scale(0.95); }
+    }
+
+    /* ── SWIPE-TO-DELETE INDICATOR ───────────────────────── */
+    .cart-item-swipe {
+      position: relative; overflow: hidden; border-radius: 10px;
+    }
+
+    /* ── MOBILE PAYMENT KEYBOARD SAFE AREA ───────────────── */
+    @media (max-width: 768px) {
+      .modal-box { padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+    }
+
+    /* Smooth scrolling */
+    * { -webkit-overflow-scrolling: touch; }
+
+    /* Prevent zoom on input focus iOS */
+    @media (max-width: 768px) {
+      input, select, textarea { font-size: 16px !important; }
+      input[type="number"] { font-size: 16px !important; }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       PRODUCTS PAGE — OPTIMIZED LAYOUT
+    ══════════════════════════════════════════════════════ */
+
+    /* Toolbar: wrap on smaller screens */
+    .products-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .products-toolbar-left {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .products-toolbar-left .input-field {
+      min-width: 0;
+    }
+
+    .products-toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    /* Product table: fixed layout for balanced columns */
+    .products-data-table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .products-data-table thead tr { background: var(--surface-2); }
+
+    .products-data-table thead th {
+      padding: 11px 12px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .products-data-table thead th:first-child { border-radius: 10px 0 0 10px; }
+    .products-data-table thead th:last-child  { border-radius: 0 10px 10px 0; }
+
+    .products-data-table tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+
+    .products-data-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+    .products-data-table tbody td {
+      padding: 12px 12px;
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+    }
+
+    /* Column widths */
+    .products-data-table .col-name    { width: 28%; }
+    .products-data-table .col-price   { width: 14%; }
+    .products-data-table .col-cost    { width: 13%; }
+    .products-data-table .col-stock   { width: 9%; }
+    .products-data-table .col-cat     { width: 14%; }
+    .products-data-table .col-status  { width: 13%; }
+    .products-data-table .col-action  { width: 9%; }
+
+    /* ── PAGINATION ──────────────────────────────────────── */
+    .pagination-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pagination-info {
+      font-size: 13px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .pagination-info span {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 36px;
+      padding: 0 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border-md);
+      background: var(--surface-2);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Sora', sans-serif;
+      cursor: pointer;
+      transition: all .18s ease;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .pg-btn:hover:not(:disabled) {
+      background: var(--surface-3);
+      border-color: var(--accent-500);
+      color: var(--accent-400);
+    }
+
+    .pg-btn.active {
+      background: linear-gradient(135deg, var(--accent-500), var(--accent-600));
+      border-color: var(--accent-600);
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(34,197,94,0.35);
+    }
+
+    .pg-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .pg-btn:active:not(:disabled) {
+      transform: scale(0.93);
+    }
+
+    .pg-ellipsis {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 36px;
+      color: var(--text-hint);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Mobile & tablet tweaks for products toolbar */
+    @media (max-width: 1024px) {
+      .products-toolbar-right .btn-secondary span.btn-label { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .products-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .products-toolbar-left {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .products-toolbar-left .input-field {
+        width: 100% !important;
+      }
+
+      .products-toolbar-right {
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        overflow-x: auto;
+        padding-bottom: 2px;
+        scrollbar-width: none;
+      }
+
+      .products-toolbar-right::-webkit-scrollbar { display: none; }
+
+      /* Mobile: product table as cards */
+      .products-data-table { display: block; table-layout: auto; }
+      .products-data-table thead { display: none; }
+      .products-data-table tbody { display: block; padding: 8px; }
+      .products-data-table tbody tr {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 14px;
+        border: 1px solid var(--border) !important;
+        border-bottom: 1px solid var(--border) !important;
+        background: var(--surface-2);
+        gap: 0;
+      }
+      .products-data-table tbody td {
+        padding: 3px 6px;
+        font-size: 13px;
+        border: none !important;
+        overflow: visible;
+        text-overflow: unset;
+      }
+      /* Name col: full width */
+      .products-data-table tbody td.col-name   { width: 100%; padding-bottom: 6px; }
+      /* Info cols: auto */
+      .products-data-table tbody td.col-price  { flex: 1; min-width: 90px; }
+      .products-data-table tbody td.col-cost   { flex: 1; min-width: 80px; }
+      .products-data-table tbody td.col-stock  { flex: 0 0 auto; }
+      .products-data-table tbody td.col-cat    { flex: 1; }
+      .products-data-table tbody td.col-status { flex: 0 0 auto; }
+      .products-data-table tbody td.col-action { width: 100%; padding-top: 8px; margin-top: 6px; border-top: 1px solid var(--border) !important; }
+      .products-data-table tbody td.col-action .flex { gap: 8px; }
+      .products-data-table tbody td.col-action .btn-edit,
+      .products-data-table tbody td.col-action .btn-danger {
+        flex: 1; justify-content: center; padding: 9px 12px;
+      }
+
+      /* Pagination on mobile */
+      .pagination-wrapper {
+        padding: 12px;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .pg-btn { min-width: 40px; height: 40px; font-size: 14px; }
+    }
+
+    @media (max-width: 375px) {
+      .pg-btn { min-width: 36px; height: 36px; font-size: 12px; }
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!--  MOBILE TOPBAR (ẩn trên desktop)                       -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <header id="mobile-topbar">
+    <button class="mob-btn" onclick="toggleMobileSidebar()" aria-label="Menu">
+      <i data-lucide="menu" class="w-5 h-5"></i>
+    </button>
+    <div class="mob-logo" id="mob-logo-wrap">
+      <img src="logo-neo-wave-pos-100-100-background1.png" alt="" style="width:80%;height:80%;object-fit:contain">
+    </div>
+    <span class="mob-title" id="mob-page-title">Dashboard</span>
+    <button class="mob-btn" onclick="toggleMobSearch()" aria-label="Tìm kiếm" id="mob-search-btn">
+      <i data-lucide="search" class="w-4 h-4"></i>
+    </button>
+    <button class="mob-btn" onclick="navigate('sales')" aria-label="Bán hàng" style="background:linear-gradient(135deg,var(--accent-500),var(--accent-600));border-color:transparent;color:white">
+      <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+      <span id="mob-cart-count"></span>
+    </button>
+  </header>
+
+  <!-- Mobile search sheet -->
+  <div id="mob-search-sheet">
+    <div class="relative">
+      <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2" style="color:var(--text-muted)"></i>
+      <input id="mob-global-search" class="input-field pl-9" placeholder="Tìm sản phẩm, khách hàng..." style="height:44px"
+        oninput="handleGlobalSearch(this.value);document.getElementById('global-search').value=this.value" />
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!--  SIDEBAR OVERLAY BACKDROP                              -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!--  MOBILE CART OVERLAY BACKDROP                          -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div id="mobile-cart-overlay" onclick="closeMobileCart()"></div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!--  MOBILE CART DRAWER (slide-up)                         -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div id="mobile-cart-drawer">
+    <div class="mob-drawer-handle"></div>
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="font-display font-semibold flex items-center gap-2" style="color:var(--text-primary);font-size:16px">
+        <i data-lucide="shopping-cart" class="w-4 h-4" style="color:var(--accent-400)"></i>
+        Giỏ Hàng
+        <span id="mob-cart-item-count" class="text-xs px-2 py-0.5 rounded-full font-bold" style="background:var(--accent-500);color:white">0</span>
+      </h3>
+      <div class="flex items-center gap-2">
+        <button id="mob-btn-held" onclick="openHeldCarts();closeMobileCart()" class="btn-secondary" style="padding:4px 10px;font-size:12px;display:none">
+          <i data-lucide="layers" class="w-3.5 h-3.5"></i> Tạm
+        </button>
+        <button onclick="clearCart();updateMobileCart()" class="text-xs" style="color:var(--text-muted)">Xóa hết</button>
+        <button onclick="closeMobileCart()" class="mob-btn" style="width:32px;height:32px;border-radius:8px">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Customer select -->
+    <div class="mb-3">
+      <select id="mob-cart-customer" class="input-field" style="height:44px"
+        onchange="document.getElementById('cart-customer').value=this.value">
+        <option value="">Khách lẻ (không lưu)</option>
+      </select>
+    </div>
+
+    <!-- Cart items mirror -->
+    <div id="mob-cart-items" style="flex:1;overflow-y:auto;min-height:80px;max-height:35vh">
+      <div class="empty-state py-6 text-sm">
+        <i data-lucide="shopping-basket" class="w-8 h-8 mx-auto mb-2 opacity-30"></i>
+        <p>Chưa có sản phẩm</p>
+      </div>
+    </div>
+
+    <!-- Discount & note row -->
+    <div class="flex gap-2 mt-3 mb-2">
+      <div style="flex:1">
+        <label class="label-sm" style="font-size:10px">Giảm giá</label>
+        <div class="flex gap-1">
+          <input id="mob-discount-value" class="input-field" type="number" min="0" placeholder="0"
+            style="height:40px;font-size:14px;flex:1"
+            oninput="document.getElementById('discount-value').value=this.value;recalcCart()" />
+          <select id="mob-discount-type" class="input-field" style="width:70px;height:40px;font-size:13px"
+            onchange="document.getElementById('discount-type').value=this.value;recalcCart()">
+            <option value="percent">%</option>
+            <option value="amount">₫</option>
+          </select>
+        </div>
+      </div>
+      <div style="flex:1">
+        <label class="label-sm" style="font-size:10px">Ghi chú</label>
+        <input id="mob-cart-note" class="input-field" placeholder="Ghi chú..." style="height:40px;font-size:14px"
+          oninput="document.getElementById('cart-note').value=this.value" />
+      </div>
+    </div>
+
+    <!-- Totals -->
+    <div class="rounded-xl p-3 mb-3" style="background:var(--surface-2);border:1px solid var(--border)">
+      <div class="flex justify-between text-sm mb-1" style="color:var(--text-secondary)">
+        <span>Tạm tính</span><span id="mob-cart-subtotal">0 ₫</span>
+      </div>
+      <div class="flex justify-between text-sm mb-1" style="color:#f87171">
+        <span>Giảm giá</span><span id="mob-cart-discount">- 0 ₫</span>
+      </div>
+      <div class="flex justify-between font-bold" style="font-size:20px;color:var(--text-primary)">
+        <span>Tổng</span><span id="mob-cart-total" style="color:var(--accent-400)">0 ₫</span>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="flex gap-2">
+      <button onclick="holdCurrentCart();updateMobileCart()" class="btn-secondary" style="padding:14px 16px">
+        <i data-lucide="pause-circle" class="w-5 h-5"></i>
+      </button>
+      <button id="mobile-checkout-btn" onclick="openPaymentModal()" class="btn-primary flex-1 justify-center"
+        style="padding:14px;font-size:16px;opacity:0.5;cursor:not-allowed" disabled>
+        <i data-lucide="credit-card" class="w-5 h-5"></i> Thanh Toán
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!--  MOBILE BOTTOM NAV                                     -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <nav id="mobile-bottom-nav">
+    <div class="mob-nav-item active" onclick="navigate('dashboard');setMobNav(this)" data-page="dashboard">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span>Dash</span>
+    </div>
+    <div class="mob-nav-item" onclick="navigate('sales');setMobNav(this)" data-page="sales" style="position:relative">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span>Bán Hàng</span>
+      <span id="mob-nav-cart-badge" class="mob-nav-badge"></span>
+    </div>
+    <div class="mob-nav-item" onclick="navigate('products');setMobNav(this)" data-page="products">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      <span>Sản Phẩm</span>
+    </div>
+    <div class="mob-nav-item" onclick="navigate('customers');setMobNav(this)" data-page="customers">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Khách Hàng</span>
+    </div>
+    <div class="mob-nav-item" onclick="navigate('settings');setMobNav(this)" data-page="settings">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M17.66 17.66l-1.41-1.41M6.34 17.66l1.41-1.41"/></svg>
+      <span>Cài Đặt</span>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!--  MOBILE CART FAB (chỉ trên trang Bán Hàng)             -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <button id="mobile-cart-fab" onclick="openMobileCart()" aria-label="Xem giỏ hàng" style="position:fixed;bottom:76px;right:16px;z-index:40;width:56px;height:56px;border-radius:18px;background:linear-gradient(135deg,var(--accent-500),var(--accent-600));border:none;cursor:pointer;color:white;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(34,197,94,0.45);transition:all .2s;display:none">
+    <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+    <span id="mob-fab-badge" style="position:absolute;top:-5px;right:-5px;min-width:20px;height:20px;border-radius:10px;background:#ef4444;color:white;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--bg);font-family:'Sora',sans-serif"></span>
+  </button>
 
   <!-- ═══════════════════════════════════════════════════════ -->
   <!--  LOGIN OVERLAY (v3 NEW)                                -->
@@ -1903,7 +2835,7 @@
   <main id="main-content" class="p-8">
 
     <!-- TOPBAR -->
-    <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center justify-between mb-8 topbar-desktop">
       <div>
         <h1 id="page-title" class="font-display text-2xl font-bold" style="color:var(--text-primary)">Dashboard</h1>
         <p id="page-subtitle" class="text-sm mt-1" style="color:var(--text-muted)">Tổng quan hệ thống bán hàng</p>
@@ -1923,7 +2855,7 @@
 
     <!-- ══ PAGE: DASHBOARD ══════════════════════════════════ -->
     <div id="page-dashboard" class="page active">
-      <div class="grid grid-cols-5 gap-4 mb-8">
+      <div class="grid gap-4 mb-8" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">
         <div class="stat-card green">
           <div class="flex items-center justify-between mb-3">
             <span class="section-title">Sản Phẩm</span>
@@ -2008,7 +2940,12 @@
 
     <!-- ══ PAGE: SALES (BÁN HÀNG) ═══════════════════════════ -->
     <div id="page-sales" class="page">
+      <!-- Products column -->
       <div>
+        <!-- Quick category pills (mobile/tablet) -->
+        <div id="pos-quick-actions">
+          <button class="pos-quick-btn active" onclick="filterPosByQuickBtn(this,'')" data-cat="">Tất cả</button>
+        </div>
         <div class="flex items-center gap-3 mb-4">
           <div class="relative flex-1">
             <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2"
@@ -2097,30 +3034,33 @@
 
     <!-- ══ PAGE: PRODUCTS ═══════════════════════════════════ -->
     <div id="page-products" class="page">
-      <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-3">
-          <input id="product-search" class="input-field" style="width:280px" placeholder="Tìm theo tên, danh mục..."
+      <!-- Toolbar -->
+      <div class="products-toolbar">
+        <div class="products-toolbar-left">
+          <input id="product-search" class="input-field" style="flex:1;min-width:180px;max-width:300px"
+            placeholder="Tìm theo tên, danh mục..."
             oninput="filterProducts(this.value)" />
-          <select id="product-filter-cat" class="input-field" style="width:160px"
+          <select id="product-filter-cat" class="input-field" style="width:160px;flex-shrink:0"
             onchange="filterProducts(document.getElementById('product-search').value)">
             <option value="">Tất cả danh mục</option>
           </select>
         </div>
-        <div class="flex items-center gap-2">
-          <!-- Import Excel -->
-          <label class="btn-secondary" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:10px 14px;font-size:13px" title="Import sản phẩm từ file Excel (.xlsx)">
-            <i data-lucide="upload" class="w-4 h-4"></i> Import Excel
+        <div class="products-toolbar-right">
+          <label class="btn-secondary" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:9px 13px;font-size:13px;white-space:nowrap" title="Import sản phẩm từ file Excel (.xlsx)">
+            <i data-lucide="upload" class="w-4 h-4"></i>
+            <span class="btn-label">Import</span>
             <input type="file" accept=".xlsx,.xls" class="hidden" onchange="importProductsExcel(this)" />
           </label>
-          <!-- Export Excel -->
-          <button class="btn-secondary" style="font-size:13px" onclick="exportProductsExcel()" title="Xuất danh sách sản phẩm ra file Excel">
-            <i data-lucide="download" class="w-4 h-4"></i> Export Excel
+          <button class="btn-secondary" style="font-size:13px;white-space:nowrap;padding:9px 13px" onclick="exportProductsExcel()" title="Xuất danh sách sản phẩm ra file Excel">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span class="btn-label">Export</span>
           </button>
-          <button class="btn-primary" onclick="checkPermission('products','openProductModal')">
+          <button class="btn-primary" style="white-space:nowrap;padding:9px 14px" onclick="checkPermission('products','openProductModal')">
             <i data-lucide="plus" class="w-4 h-4"></i> Thêm Sản Phẩm
           </button>
         </div>
       </div>
+      <!-- Table card -->
       <div class="card overflow-hidden">
         <div id="products-table-wrapper">
           <div class="empty-state">
@@ -3318,6 +4258,8 @@
       const total = Cart.items.reduce((s, i) => s + i.qty, 0);
       if (total > 0) { badge.textContent = total; badge.classList.remove('hidden'); }
       else badge.classList.add('hidden');
+      // Sync mobile cart after totals are updated
+      if (typeof updateMobileCart === 'function') updateMobileCart();
     };
 
     window.addToCart = function (productId) {
@@ -3363,6 +4305,9 @@
       const count = HeldCarts.list.length;
       if (btn) btn.style.display = count > 0 ? '' : 'none';
       if (badge) badge.textContent = count;
+      // Also update mobile held carts button
+      const mobBtn = document.getElementById('mob-btn-held');
+      if (mobBtn) mobBtn.style.display = count > 0 ? '' : 'none';
     }
 
     window.holdCurrentCart = function (openModal_ = false) {
@@ -3888,27 +4833,122 @@
       posFilter.innerHTML = `<option value="">Tất cả danh mục</option>` + cats.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
 
       const wrap = document.getElementById('products-table-wrapper');
-      if (!items.length) { wrap.innerHTML = `<div class="empty-state"><i data-lucide="package" class="w-10 h-10 mx-auto mb-3 opacity-30"></i><p class="text-sm">Chưa có sản phẩm nào</p></div>`; lucide.createIcons(); return; }
-      wrap.innerHTML = `<table class="data-table">
-    <thead><tr><th>Tên Sản Phẩm</th><th>Giá Bán</th><th>Giá Vốn</th><th>Tồn Kho</th><th>Danh Mục</th><th>Trạng Thái</th><th>Thao Tác</th></tr></thead>
-    <tbody>${items.map(p => `<tr>
-      <td><div class="font-medium" style="color:var(--text-primary)">${esc(p.name)}</div><div class="text-xs mt-0.5" style="color:var(--text-muted)">${esc(p.description || '')}</div></td>
-      <td class="font-medium" style="color:var(--accent-400)">${formatCurrency(p.price)}</td>
-      <td class="text-xs" style="color:var(--text-muted)">${p.cost ? formatCurrency(p.cost) : '—'}</td>
-      <td><span class="font-bold ${(p.stock || 0) <= 0 ? 'text-red-400' : (p.stock || 0) <= 5 ? 'text-amber-400' : ''}">${p.stock || 0}</span></td>
-      <td>${p.category ? `<span class="badge badge-blue">${esc(p.category)}</span>` : '—'}</td>
-      <td>${getStatusBadge(p.status)}</td>
-      <td><div class="flex gap-2">
-        <button class="btn-edit" onclick="openProductModal(AppStore.products.find(x=>x.id==='${p.id}'))"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
-        <button class="btn-danger" onclick="deleteProductConfirm('${p.id}','${esc(p.name).replace(/'/g, "\\'")}')" title="Xóa sản phẩm"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
-      </div></td>
-    </tr>`).join('')}</tbody></table>`;
+      if (!items.length) {
+        wrap.innerHTML = `<div class="empty-state"><i data-lucide="package" class="w-10 h-10 mx-auto mb-3 opacity-30"></i><p class="text-sm">Chưa có sản phẩm nào</p></div>`;
+        lucide.createIcons(); return;
+      }
+
+      // ── Pagination ──────────────────────────────────────────
+      const PAGE_SIZE = 8;
+      const totalItems = items.length;
+      const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+
+      // Clamp current page
+      if (window._productPage === undefined) window._productPage = 1;
+      if (window._productPage < 1) window._productPage = 1;
+      if (window._productPage > totalPages) window._productPage = totalPages;
+
+      const page = window._productPage;
+      const start = (page - 1) * PAGE_SIZE;
+      const end   = Math.min(start + PAGE_SIZE, totalItems);
+      const pageItems = items.slice(start, end);
+
+      // ── Table rows ──────────────────────────────────────────
+      const rowsHtml = pageItems.map(p => `<tr>
+        <td class="col-name">
+          <div class="font-medium" style="color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${esc(p.name)}</div>
+          ${p.description ? `<div class="text-xs mt-0.5" style="color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.description)}</div>` : ''}
+        </td>
+        <td class="col-price font-medium" style="color:var(--accent-400);white-space:nowrap">${formatCurrency(p.price)}</td>
+        <td class="col-cost" style="color:var(--text-muted);white-space:nowrap;font-size:12px">${p.cost ? formatCurrency(p.cost) : '—'}</td>
+        <td class="col-stock"><span class="font-bold ${(p.stock||0)<=0?'text-red-400':(p.stock||0)<=5?'text-amber-400':''}">${p.stock||0}</span></td>
+        <td class="col-cat">${p.category ? `<span class="badge badge-blue" style="white-space:nowrap">${esc(p.category)}</span>` : '—'}</td>
+        <td class="col-status">${getStatusBadge(p.status)}</td>
+        <td class="col-action">
+          <div class="flex gap-2">
+            <button class="btn-edit" title="Sửa" onclick="openProductModal(AppStore.products.find(x=>x.id==='${p.id}'))"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+            <button class="btn-danger" title="Xóa" onclick="deleteProductConfirm('${p.id}','${esc(p.name).replace(/'/g,"\\'")}')"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+          </div>
+        </td>
+      </tr>`).join('');
+
+      // ── Pagination buttons ──────────────────────────────────
+      function buildPagination() {
+        if (totalPages <= 1) return '';
+        let btns = '';
+
+        // Prev button
+        btns += `<button class="pg-btn" ${page===1?'disabled':''} onclick="window._productPage=${page-1};renderProductsTable(window._lastProductItems)" title="Trang trước">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>`;
+
+        // Page numbers with ellipsis
+        const delta = 1; // pages around current
+        const range = [];
+        for (let i = Math.max(2, page-delta); i <= Math.min(totalPages-1, page+delta); i++) {
+          range.push(i);
+        }
+        // Always show first
+        btns += `<button class="pg-btn ${page===1?'active':''}" onclick="window._productPage=1;renderProductsTable(window._lastProductItems)">1</button>`;
+        // Left ellipsis
+        if (range.length && range[0] > 2) {
+          btns += `<span class="pg-ellipsis">…</span>`;
+        }
+        // Middle pages
+        range.forEach(p_ => {
+          btns += `<button class="pg-btn ${p_===page?'active':''}" onclick="window._productPage=${p_};renderProductsTable(window._lastProductItems)">${p_}</button>`;
+        });
+        // Right ellipsis
+        if (range.length && range[range.length-1] < totalPages-1) {
+          btns += `<span class="pg-ellipsis">…</span>`;
+        }
+        // Always show last (if > 1)
+        if (totalPages > 1) {
+          btns += `<button class="pg-btn ${page===totalPages?'active':''}" onclick="window._productPage=${totalPages};renderProductsTable(window._lastProductItems)">${totalPages}</button>`;
+        }
+
+        // Next button
+        btns += `<button class="pg-btn" ${page===totalPages?'disabled':''} onclick="window._productPage=${page+1};renderProductsTable(window._lastProductItems)" title="Trang sau">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>`;
+
+        return `<div class="pagination-wrapper">
+          <div class="pagination-info">Hiển thị <span>${start+1}–${end}</span> / <span>${totalItems}</span> sản phẩm</div>
+          <div class="pagination-controls">${btns}</div>
+        </div>`;
+      }
+
+      // ── Save items for pagination re-render ─────────────────
+      window._lastProductItems = items;
+
+      // ── Compose HTML ────────────────────────────────────────
+      wrap.innerHTML = `
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+          <table class="products-data-table">
+            <thead><tr>
+              <th class="col-name">Tên Sản Phẩm</th>
+              <th class="col-price">Giá Bán</th>
+              <th class="col-cost">Giá Vốn</th>
+              <th class="col-stock">Tồn</th>
+              <th class="col-cat">Danh Mục</th>
+              <th class="col-status">Trạng Thái</th>
+              <th class="col-action">Thao Tác</th>
+            </tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+        ${buildPagination()}
+      `;
       lucide.createIcons();
     }
 
     function renderCustomersTable(items) {
       const cartSel = document.getElementById('cart-customer');
-      cartSel.innerHTML = `<option value="">Khách lẻ (không lưu)</option>` + AppStore.customers.map(c => `<option value="${c.id}">${esc(c.name)} ${c.phone ? '— ' + c.phone : ''}</option>`).join('');
+      const customersHtml = `<option value="">Khách lẻ (không lưu)</option>` + AppStore.customers.map(c => `<option value="${c.id}">${esc(c.name)} ${c.phone ? '— ' + c.phone : ''}</option>`).join('');
+      cartSel.innerHTML = customersHtml;
+      // Also update mobile cart customer select
+      const mobCustSel = document.getElementById('mob-cart-customer');
+      if (mobCustSel) { mobCustSel.innerHTML = customersHtml; }
 
       const wrap = document.getElementById('customers-table-wrapper');
       if (!items.length) { wrap.innerHTML = `<div class="empty-state"><i data-lucide="users" class="w-10 h-10 mx-auto mb-3 opacity-30"></i><p class="text-sm">Chưa có khách hàng</p></div>`; lucide.createIcons(); return; }
@@ -4774,7 +5814,11 @@
     function renderCurrentPage(page) {
       const active = page || document.querySelector('.page.active')?.id?.replace('page-', '');
       if (!active) return;
-      if (active === 'products') renderProductsTable(AppStore.products);
+      if (active === 'products') {
+        // Reset pagination when entering page fresh (not from pagination click)
+        if (page) window._productPage = 1;
+        renderProductsTable(AppStore.products);
+      }
       if (active === 'customers') renderCustomersTable(AppStore.customers);
       if (active === 'dashboard') updateDashboard();
       if (active === 'sales') { renderPosGrid(AppStore.products.filter(p => p.status !== 'inactive')); renderCartItems(); recalcCart(); }
@@ -4792,6 +5836,8 @@
       let items = AppStore.products;
       if (cat) items = items.filter(p => p.category === cat);
       if (q.trim()) { const _q = q.toLowerCase(); items = items.filter(p => (p.name || '').toLowerCase().includes(_q) || (p.category || '').toLowerCase().includes(_q)); }
+      // Reset to page 1 when filter changes
+      window._productPage = 1;
       renderProductsTable(items);
     };
     window.filterCustomers = (q) => {
@@ -5385,6 +6431,215 @@
 
 
     // ══════════════════════════════════════════════════════════
+    //  MOBILE RESPONSIVE v8 — Functions
+    // ══════════════════════════════════════════════════════════
+
+    // Sidebar toggle
+    function toggleMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+        document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+      }
+
+      function closeMobileSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebar-overlay').classList.remove('show');
+        document.body.style.overflow = '';
+      }
+
+      // Mobile search sheet
+      function toggleMobSearch() {
+        const sheet = document.getElementById('mob-search-sheet');
+        sheet.classList.toggle('open');
+        if (sheet.classList.contains('open')) {
+          document.getElementById('mob-global-search').focus();
+        }
+      }
+
+      // Mobile cart drawer
+      function openMobileCart() {
+        if (window.innerWidth > 1024) return; // only on mobile/tablet
+        updateMobileCart();
+        document.getElementById('mobile-cart-drawer').classList.add('open');
+        document.getElementById('mobile-cart-overlay').classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMobileCart() {
+        document.getElementById('mobile-cart-drawer').classList.remove('open');
+        document.getElementById('mobile-cart-overlay').classList.remove('show');
+        document.body.style.overflow = '';
+      }
+
+      // Sync mobile cart from desktop cart
+      function updateMobileCart() {
+        // Sync cart items display
+        const desktopItems = document.getElementById('cart-items');
+        const mobileItems = document.getElementById('mob-cart-items');
+        if (mobileItems && desktopItems) {
+          mobileItems.innerHTML = desktopItems.innerHTML;
+        }
+        
+        // Sync totals
+        const subEl = document.getElementById('cart-subtotal');
+        const discEl = document.getElementById('cart-discount-display');
+        const totEl = document.getElementById('cart-total');
+        if (subEl) document.getElementById('mob-cart-subtotal').textContent = subEl.textContent;
+        if (discEl) document.getElementById('mob-cart-discount').textContent = discEl.textContent;
+        if (totEl) document.getElementById('mob-cart-total').textContent = totEl.textContent;
+        
+        // Count items — use Cart.items (the actual cart state)
+        const cartItems = (typeof Cart !== 'undefined' && Cart?.items) ? Cart.items : [];
+        const count = cartItems.reduce((s, i) => s + (i.qty || 1), 0);
+        
+        // Update badge
+        const badge = document.getElementById('mob-nav-cart-badge');
+        const fabBadge = document.getElementById('mob-fab-badge');
+        const topBadge = document.getElementById('mob-cart-count');
+        const drawerCount = document.getElementById('mob-cart-item-count');
+        
+        if (count > 0) {
+          if (badge) { badge.style.display='flex'; badge.textContent=count; }
+          if (fabBadge) { fabBadge.style.display='flex'; fabBadge.textContent=count; }
+          if (topBadge) { topBadge.style.display='flex'; topBadge.textContent=count; }
+          if (drawerCount) drawerCount.textContent = count;
+        } else {
+          if (badge) badge.style.display='none';
+          if (fabBadge) fabBadge.style.display='none';
+          if (topBadge) topBadge.style.display='none';
+          if (drawerCount) drawerCount.textContent = '0';
+        }
+        
+        // Sync checkout btn state
+        const desktopCheckout = document.getElementById('btn-checkout');
+        const mobileCheckout = document.getElementById('mobile-checkout-btn');
+        if (desktopCheckout && mobileCheckout) {
+          if (desktopCheckout.disabled) {
+            mobileCheckout.disabled = true;
+            mobileCheckout.style.opacity = '0.5';
+            mobileCheckout.style.cursor = 'not-allowed';
+          } else {
+            mobileCheckout.disabled = false;
+            mobileCheckout.style.opacity = '1';
+            mobileCheckout.style.cursor = 'pointer';
+          }
+        }
+        
+        // Sync customer select
+        const desktopCust = document.getElementById('cart-customer');
+        const mobCust = document.getElementById('mob-cart-customer');
+        if (desktopCust && mobCust) {
+          mobCust.innerHTML = desktopCust.innerHTML;
+          mobCust.value = desktopCust.value;
+        }
+      }
+
+      // (navigate override is now done inside init after navigate is defined)
+
+      function setMobNav(el) {
+        document.querySelectorAll('.mob-nav-item').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+      }
+
+      // Quick category filter for mobile POS
+      function filterPosByQuickBtn(btn, cat) {
+        document.querySelectorAll('.pos-quick-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('pos-cat-filter').value = cat;
+        filterPosProducts(document.getElementById('pos-search').value);
+      }
+
+      function populateMobileQuickCats() {
+        const catFilter = document.getElementById('pos-cat-filter');
+        const quickActions = document.getElementById('pos-quick-actions');
+        if (!catFilter || !quickActions) return;
+        const options = Array.from(catFilter.options);
+        quickActions.innerHTML = '';
+        options.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'pos-quick-btn' + (opt.value === '' ? ' active' : '');
+          btn.textContent = opt.text;
+          btn.dataset.cat = opt.value;
+          btn.onclick = () => filterPosByQuickBtn(btn, opt.value);
+          quickActions.appendChild(btn);
+        });
+      }
+
+      // Touch swipe to close cart drawer
+      (function() {
+        let startY = 0;
+        const drawer = document.getElementById('mobile-cart-drawer');
+        if (!drawer) return;
+        drawer.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+        drawer.addEventListener('touchend', e => {
+          const dy = e.changedTouches[0].clientY - startY;
+          if (dy > 80) closeMobileCart();
+        }, { passive: true });
+      })();
+
+    // ── Expose mobile functions to global scope IMMEDIATELY ─────
+    // MUST be at module top-level (not inside async init) so that
+    // HTML onclick handlers can call them from the first user interaction.
+    window.toggleMobileSidebar  = toggleMobileSidebar;
+    window.closeMobileSidebar   = closeMobileSidebar;
+    window.toggleMobSearch      = toggleMobSearch;
+    window.openMobileCart       = openMobileCart;
+    window.closeMobileCart      = closeMobileCart;
+    window.updateMobileCart     = updateMobileCart;
+    window.setMobNav            = setMobNav;
+    window.filterPosByQuickBtn  = filterPosByQuickBtn;
+    window.populateMobileQuickCats = populateMobileQuickCats;
+
+    // ── Patch window.navigate to add mobile side-effects ────────
+    // window.navigate is already defined at module top-level above.
+    // We wrap it here (also at top-level) so the patch is always applied
+    // regardless of whether init() returns early due to Firebase auth.
+    (function() {
+      const _origNav = window.navigate;
+      window.navigate = function(page) {
+        if (_origNav) _origNav(page);
+        // Update mobile topbar title
+        const titles = {
+          dashboard: 'Dashboard', sales: 'Bán Hàng', products: 'Sản Phẩm',
+          customers: 'Khách Hàng', inventory: 'Kho Hàng',
+          settings: 'Cài Đặt', reports: 'Báo Cáo', staff: 'Nhân Viên', logs: 'Nhật Ký'
+        };
+        const mobTitle = document.getElementById('mob-page-title');
+        if (mobTitle) mobTitle.textContent = titles[page] || page;
+        // Update mobile bottom nav active state
+        document.querySelectorAll('.mob-nav-item').forEach(el => {
+          el.classList.toggle('active', el.dataset.page === page);
+        });
+        // Close sidebar on mobile after nav
+        if (window.innerWidth <= 1024) closeMobileSidebar();
+        // Cart FAB only on sales page on mobile/tablet
+        const fab = document.getElementById('mobile-cart-fab');
+        if (fab) fab.style.display = (page === 'sales' && window.innerWidth <= 1024) ? 'flex' : 'none';
+        // Close search sheet
+        document.getElementById('mob-search-sheet')?.classList.remove('open');
+        // On sales: populate quick cats and sync cart
+        if (page === 'sales') {
+          setTimeout(() => { updateMobileCart(); populateMobileQuickCats(); }, 350);
+        }
+      };
+    })();
+
+    // ── MutationObserver: sync mobile cart whenever desktop cart changes ──
+    // Debounced so recalcCart() finishes updating totals before we read them.
+    (function() {
+      let _cartSyncTimeout = null;
+      const _cartSyncObserver = new MutationObserver(() => {
+        clearTimeout(_cartSyncTimeout);
+        _cartSyncTimeout = setTimeout(() => { updateMobileCart(); }, 20);
+      });
+      const _cartEl = document.getElementById('cart-items');
+      if (_cartEl) _cartSyncObserver.observe(_cartEl, { childList: true, subtree: true, characterData: true });
+    })();
+
+
+    // ══════════════════════════════════════════════════════════
     //  V4 — OFFLINE CACHE WARM-UP
     // ══════════════════════════════════════════════════════════
     window.V4OfflineCache = (() => {
@@ -5512,10 +6767,7 @@
       // Khôi phục trạng thái held carts
       refreshHeldCartsBadge();
 
-      // ── Login background được xử lý hoàn toàn qua CSS data-accent selector ──
-      // (không cần khởi tạo particles hay đồng bộ gradient via JS)
-      //setInterval(() => lucide.createIcons(), 600);
-      // ✅ Chỉ chạy khi có element mới thêm vào DOM
+      // ── Lucide icons observer ──────────────────────────────
       const _lucideObserver = new MutationObserver(() => {
         // Chỉ tạo icon nếu có data-lucide chưa được xử lý
         if (document.querySelector('[data-lucide]:not([class*="lucide"])')) {
