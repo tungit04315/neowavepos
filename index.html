@@ -4,14 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEO WAVE POS v4 — Quản Trị Nâng Cao</title>
+  <title>NEO WAVE POS v11 — Firebase Full Sync + Log Pro</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="shortcut icon" href="logo-neo-wave-pos-100-100-background1.png" type="image/x-icon">
+  <link rel="shortcut icon" href="logo-neo-wave-pos-100-100.png" type="image/x-icon">
   <link
     href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -1428,6 +1429,161 @@
     .log-action-badge.stock {
       background: rgba(20, 184, 166, 0.12);
       color: #2dd4bf;
+    }
+
+    /* ── V11: LOG UPGRADES ───────────────────────────────── */
+    .log-entry-sale {
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background .15s;
+      padding: 12px 10px;
+      margin: 0 -10px;
+    }
+    .log-entry-sale:hover {
+      background: rgba(168, 85, 247, 0.06);
+    }
+    .log-entry-sale:hover .log-view-btn {
+      opacity: 1;
+    }
+    .log-view-btn {
+      opacity: 0;
+      transition: opacity .2s;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .log-live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      color: #4ade80;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .log-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: live-pulse 1.5s ease infinite;
+    }
+    @keyframes live-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,.7); }
+      50% { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+    }
+    .log-stats-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .log-stat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 9px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .log-stat-chip strong {
+      color: var(--text-primary);
+    }
+    /* Invoice share modal */
+    .invoice-share-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .invoice-share-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 10px 6px;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 1px solid var(--border-md);
+      background: var(--surface-2);
+      transition: all .2s;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .invoice-share-btn:hover {
+      background: var(--surface-3);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+    .invoice-share-btn .share-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .share-fb   { background: rgba(24, 119, 242, 0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,.2); }
+    .share-zalo { background: rgba(0, 101, 255, 0.12); color: #0ea5e9; border: 1px solid rgba(14,165,233,.2); }
+    .share-tw   { background: rgba(29, 161, 242, 0.12); color: #38bdf8; border: 1px solid rgba(56,189,248,.2); }
+    .share-copy { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.2); }
+    .share-png  { background: rgba(168,85,247,.12); color: #c084fc; border: 1px solid rgba(168,85,247,.2); }
+    .share-wa   { background: rgba(37,211,102,.12); color: #22c55e; border: 1px solid rgba(34,197,94,.2); }
+    /* Log pagination */
+    .log-pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding-top: 16px;
+      flex-wrap: wrap;
+    }
+    .log-pg-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border-md);
+      background: var(--surface-2);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .15s;
+    }
+    .log-pg-btn:hover { background: var(--surface-3); color: var(--text-primary); }
+    .log-pg-btn.active { background: var(--accent-600); color: white; border-color: var(--accent-600); }
+    .log-pg-btn:disabled { opacity: .35; cursor: not-allowed; }
+    .log-count-badge {
+      background: rgba(168, 85, 247, 0.12);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
     }
 
     /* ════════════════════════════════════════════════════════
@@ -3589,12 +3745,20 @@
       </div>
     </div>
 
-    <!-- ══ PAGE: LOGS / NHẬT KÝ (v3 NEW) ════════════════════ -->
+    <!-- ══ PAGE: LOGS / NHẬT KÝ (v11 UPGRADED) ══════════════ -->
     <div id="page-logs" class="page">
-      <div class="flex items-center justify-between mb-6">
-        <p class="text-sm" style="color:var(--text-muted)">Lịch sử mọi hành động trong hệ thống</p>
-        <div class="flex gap-2">
-          <select id="log-filter-action" class="input-field" style="width:150px" onchange="renderLogs()">
+      <!-- Header row -->
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+        <div class="flex items-center gap-3">
+          <p class="text-sm" style="color:var(--text-muted)">Lịch sử mọi hành động trong hệ thống</p>
+          <span class="log-live-badge"><span class="log-live-dot"></span>LIVE</span>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <input id="log-search" class="input-field" style="width:200px;padding:8px 12px;font-size:13px"
+            placeholder="🔍 Tìm nội dung..." oninput="_logPage=1;renderLogs()" />
+          <input id="log-filter-date" type="date" class="input-field"
+            style="width:150px;padding:8px 12px;font-size:13px" onchange="_logPage=1;renderLogs()" />
+          <select id="log-filter-action" class="input-field" style="width:150px" onchange="_logPage=1;renderLogs()">
             <option value="">Tất cả hành động</option>
             <option value="create">Tạo mới</option>
             <option value="update">Cập nhật</option>
@@ -3608,12 +3772,16 @@
           </button>
         </div>
       </div>
+      <!-- Stats bar -->
+      <div id="log-stats-bar" class="log-stats-bar"></div>
+      <!-- Log list -->
       <div class="card p-6">
         <div id="logs-container">
           <div class="empty-state"><i data-lucide="scroll-text" class="w-10 h-10 mx-auto mb-3 opacity-30"></i>
             <p class="text-sm">Chưa có nhật ký</p>
           </div>
         </div>
+        <div id="logs-pagination"></div>
       </div>
     </div>
 
@@ -3728,31 +3896,67 @@
   </div>
 
   <!-- ═══════════════════════════════════════════════════════ -->
-  <!--  MODAL: XEM TRƯỚC HÓA ĐƠN (v4 NEW)                   -->
+  <!--  MODAL: XEM TRƯỚC HÓA ĐƠN (v11 UPGRADED)             -->
   <!-- ═══════════════════════════════════════════════════════ -->
   <div id="invoice-preview-modal" class="modal-overlay">
-    <div class="modal-box" style="width:400px;max-height:92vh">
-      <div class="flex items-center justify-between mb-5">
+    <div class="modal-box" style="width:440px;max-height:94vh">
+      <div class="flex items-center justify-between mb-4">
         <h3 class="font-display font-semibold text-lg" style="color:var(--text-primary)">
           <i data-lucide="file-text" class="w-5 h-5 inline mr-2" style="color:var(--accent-400)"></i>Xem Trước Hóa Đơn
         </h3>
         <button class="btn-secondary p-2" onclick="closeModal('invoice-preview-modal')"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
 
-      <!-- Preview area -->
-      <div id="invoice-preview-content" class="rounded-xl overflow-hidden mb-5" style="background:white;color:#111;font-family:'DM Sans',monospace;font-size:13px;max-height:55vh;overflow-y:auto">
-        <!-- JS will inject here -->
+      <!-- Preview area — id used by html2canvas -->
+      <div id="invoice-preview-content" class="rounded-xl overflow-hidden mb-4"
+        style="background:white;color:#111;font-family:'DM Sans',monospace;font-size:13px;max-height:50vh;overflow-y:auto">
       </div>
 
-      <!-- Actions -->
-      <div class="flex gap-3">
-        <button onclick="V4Print.printFromPreview()" class="btn-primary flex-1 justify-center" style="padding:12px">
+      <!-- Primary actions -->
+      <div class="flex gap-2 mb-4">
+        <button onclick="V4Print.printFromPreview()" class="btn-primary flex-1 justify-center" style="padding:11px">
           <i data-lucide="printer" class="w-4 h-4"></i> In Hóa Đơn
         </button>
-        <button onclick="closeModal('invoice-preview-modal')" class="btn-secondary" style="padding:12px 20px">
-          <i data-lucide="x" class="w-4 h-4"></i> Đóng
+        <button onclick="V4Print.exportPNG()" class="btn-secondary flex-1 justify-center" style="padding:11px;color:#c084fc;border-color:rgba(168,85,247,.3)">
+          <i data-lucide="image" class="w-4 h-4"></i> Xuất PNG
         </button>
       </div>
+
+      <!-- Share section -->
+      <div class="rounded-xl p-3 mb-3" style="background:var(--surface-2);border:1px solid var(--border)">
+        <p class="text-xs font-semibold mb-3"
+          style="color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em">Chia Sẻ Hóa Đơn</p>
+        <div class="invoice-share-grid">
+          <button class="invoice-share-btn" onclick="V4Print.shareToFacebook()">
+            <div class="share-icon share-fb">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </div>
+            Facebook
+          </button>
+          <button class="invoice-share-btn" onclick="V4Print.shareToZalo()">
+            <div class="share-icon share-zalo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.003c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.218z"/></svg>
+            </div>
+            Zalo
+          </button>
+          <button class="invoice-share-btn" onclick="V4Print.shareToWhatsApp()">
+            <div class="share-icon share-wa">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            </div>
+            WhatsApp
+          </button>
+          <button class="invoice-share-btn" onclick="V4Print.copyInvoiceText()">
+            <div class="share-icon share-copy">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </div>
+            Sao chép
+          </button>
+        </div>
+      </div>
+
+      <button onclick="closeModal('invoice-preview-modal')" class="btn-secondary w-full justify-center" style="padding:10px">
+        <i data-lucide="x" class="w-4 h-4"></i> Đóng
+      </button>
     </div>
   </div>
 
@@ -3973,7 +4177,8 @@
     import { initializeApp, getApps, deleteApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import {
       getFirestore, collection, addDoc, getDocs,
-      doc, updateDoc, deleteDoc, query, orderBy, onSnapshot, Timestamp, setDoc, getDoc
+      doc, updateDoc, deleteDoc, query, orderBy, onSnapshot, Timestamp, setDoc, getDoc,
+      writeBatch, limit, serverTimestamp, where
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
     import {
       getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
@@ -4094,11 +4299,151 @@
       exportHistory: JSON.parse(localStorage.getItem('sf_export_history') || '[]'),
       staff: JSON.parse(localStorage.getItem('sf_staff') || '[]'),
       logs: JSON.parse(localStorage.getItem('sf_logs') || '[]'),
+      heldCarts: JSON.parse(localStorage.getItem('sf_held_carts') || '[]'),
     };
+
+    // ── Firebase-aware save helpers ──────────────────────────
+    // Each function saves to localStorage (always) AND Firestore (when connected)
+
+    // 1. INVOICES
+    async function saveInvoiceFS(invoice) {
+      localStorage.setItem('sf_invoices', JSON.stringify(AppStore.invoices));
+      if (!db) return;
+      try {
+        const { id, ...data } = invoice;
+        // Strip localStorage-only id prefix if needed
+        if (id && id.startsWith('inv_')) {
+          // Use setDoc with generated id
+          await setDoc(doc(db, 'invoices', id), { ...data, syncedAt: serverTimestamp() });
+        } else {
+          await addDoc(collection(db, 'invoices'), { ...data, syncedAt: serverTimestamp() });
+        }
+      } catch (e) { console.warn('Invoice FS save error:', e); }
+    }
+    async function deleteInvoiceFS(id) {
+      localStorage.setItem('sf_invoices', JSON.stringify(AppStore.invoices));
+      if (!db) return;
+      try { await deleteDoc(doc(db, 'invoices', id)); } catch (e) { console.warn(e); }
+    }
     function saveInvoices() { localStorage.setItem('sf_invoices', JSON.stringify(AppStore.invoices)); }
+
+    // 2. EXPORT HISTORY
+    async function saveExportHistoryFS(entries) {
+      localStorage.setItem('sf_export_history', JSON.stringify(AppStore.exportHistory));
+      if (!db || !entries?.length) return;
+      try {
+        const batch = writeBatch(db);
+        entries.forEach(h => {
+          const ref = doc(db, 'export_history', h.id);
+          batch.set(ref, { ...h, syncedAt: serverTimestamp() });
+        });
+        await batch.commit();
+      } catch (e) { console.warn('ExportHistory FS save error:', e); }
+    }
+    async function clearExportHistoryFS() {
+      localStorage.setItem('sf_export_history', JSON.stringify([]));
+      if (!db) return;
+      try {
+        const snap = await getDocs(collection(db, 'export_history'));
+        if (snap.empty) return;
+        const batch = writeBatch(db);
+        snap.docs.forEach(d => batch.delete(d.ref));
+        await batch.commit();
+      } catch (e) { console.warn(e); }
+    }
     function saveExportHistory() { localStorage.setItem('sf_export_history', JSON.stringify(AppStore.exportHistory)); }
-    function saveStaffLocal() { localStorage.setItem('sf_staff', JSON.stringify(AppStore.staff)); }
+
+    // 3. ACTION LOGS
+    const _logQueue = [];
+    let _logFlushTimer = null;
+    async function flushLogQueue() {
+      if (!db || !_logQueue.length) return;
+      const toWrite = _logQueue.splice(0, 50);
+      try {
+        const batch = writeBatch(db);
+        toWrite.forEach(entry => {
+          batch.set(doc(db, 'logs', entry.id), { ...entry, syncedAt: serverTimestamp() });
+        });
+        await batch.commit();
+      } catch (e) { console.warn('Log flush error:', e); _logQueue.unshift(...toWrite); }
+    }
+    function enqueueLog(entry) {
+      if (!db) return;
+      _logQueue.push(entry);
+      clearTimeout(_logFlushTimer);
+      _logFlushTimer = setTimeout(flushLogQueue, 2000); // debounce 2s
+    }
+    async function clearLogsFS() {
+      AppStore.logs = [];
+      localStorage.setItem('sf_logs', JSON.stringify([]));
+      renderLogs();
+      if (!db) return;
+      try {
+        let totalDeleted = 0;
+        // Loop until all docs are deleted (no size limit)
+        while (true) {
+          const snap = await getDocs(query(collection(db, 'logs'), limit(400)));
+          if (snap.empty) break;
+          const batch = writeBatch(db);
+          snap.docs.forEach(d => batch.delete(d.ref));
+          await batch.commit();
+          totalDeleted += snap.docs.length;
+          if (snap.docs.length < 400) break;
+        }
+        console.log(`[clearLogsFS] Đã xóa ${totalDeleted} log entries từ Firestore`);
+      } catch (e) { console.warn('clearLogsFS error:', e); }
+    }
     function saveLogs() { localStorage.setItem('sf_logs', JSON.stringify(AppStore.logs)); }
+
+    // 4. STAFF
+    async function saveStaffFS(member) {
+      localStorage.setItem('sf_staff', JSON.stringify(AppStore.staff));
+      if (!db) return;
+      try {
+        const { id, ...data } = member;
+        await setDoc(doc(db, 'users', id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
+      } catch (e) { console.warn('Staff FS save error:', e); }
+    }
+    async function deleteStaffFS(id) {
+      localStorage.setItem('sf_staff', JSON.stringify(AppStore.staff));
+      if (!db) return;
+      try { await deleteDoc(doc(db, 'users', id)); } catch (e) { console.warn(e); }
+    }
+    function saveStaffLocal() { localStorage.setItem('sf_staff', JSON.stringify(AppStore.staff)); }
+
+    // 5. HELD CARTS
+    async function saveHeldCartFS(held) {
+      localStorage.setItem('sf_held_carts', JSON.stringify(AppStore.heldCarts));
+      if (!db || !window.currentUser?.uid) return;
+      try {
+        await setDoc(doc(db, 'held_carts', held.id), {
+          ...held, uid: window.currentUser.uid, syncedAt: serverTimestamp()
+        });
+      } catch (e) { console.warn('HeldCart FS save error:', e); }
+    }
+    async function deleteHeldCartFS(id) {
+      localStorage.setItem('sf_held_carts', JSON.stringify(AppStore.heldCarts));
+      if (!db) return;
+      try { await deleteDoc(doc(db, 'held_carts', id)); } catch (e) { console.warn(e); }
+    }
+
+    // 6. SETTINGS → Firestore doc settings/{uid or 'store'}
+    async function saveSettingsFS(key, value) {
+      if (!db) return;
+      try {
+        const docId = window.currentUser?.uid || 'store';
+        await setDoc(doc(db, 'settings', docId), { [key]: value, updatedAt: serverTimestamp() }, { merge: true });
+      } catch (e) { console.warn('Settings FS save error:', e); }
+    }
+
+    // 7. INVOICE COUNTER → synced to Firestore
+    async function syncInvoiceCounterFS(counter) {
+      if (!db) return;
+      try {
+        const docId = window.currentUser?.uid || 'store';
+        await setDoc(doc(db, 'settings', docId), { invoiceCounter: counter, updatedAt: serverTimestamp() }, { merge: true });
+      } catch (e) { console.warn(e); }
+    }
 
     window.logAction = function (actionType, detail) {
       const entry = {
@@ -4113,41 +4458,152 @@
       AppStore.logs.unshift(entry);
       if (AppStore.logs.length > 1000) AppStore.logs = AppStore.logs.slice(0, 1000);
       saveLogs();
+      enqueueLog(entry); // 🔥 Ghi lên Firestore
       if (document.querySelector('#page-logs.active')) renderLogs();
     };
 
+    window._logPage = 1;
+    const LOG_PAGE_SIZE = 50;
+
     window.renderLogs = function () {
-      const filter = document.getElementById('log-filter-action')?.value || '';
-      const logs = filter ? AppStore.logs.filter(l => l.action === filter) : AppStore.logs;
+      const filterAction = document.getElementById('log-filter-action')?.value || '';
+      const filterDate   = document.getElementById('log-filter-date')?.value || '';
+      const searchQ      = (document.getElementById('log-search')?.value || '').toLowerCase().trim();
+
+      let logs = AppStore.logs;
+
+      // Filter by action type
+      if (filterAction) logs = logs.filter(l => l.action === filterAction);
+
+      // Filter by date (YYYY-MM-DD)
+      if (filterDate) logs = logs.filter(l => {
+        const d = new Date(l.timestamp);
+        const localDate = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        return localDate === filterDate;
+      });
+
+      // Filter by search query
+      if (searchQ) logs = logs.filter(l =>
+        (l.detail || '').toLowerCase().includes(searchQ) ||
+        (l.userName || '').toLowerCase().includes(searchQ) ||
+        (l.action || '').toLowerCase().includes(searchQ)
+      );
+
+      // ── Stats bar ─────────────────────────────────────────
+      const statsBar = document.getElementById('log-stats-bar');
+      if (statsBar) {
+        const total = AppStore.logs.length;
+        const sales = AppStore.logs.filter(l => l.action === 'sale').length;
+        const today = AppStore.logs.filter(l => {
+          const d = new Date(l.timestamp); const now = new Date();
+          return d.toDateString() === now.toDateString();
+        }).length;
+        statsBar.innerHTML = `
+          <div class="log-stat-chip"><strong>${total}</strong> tổng nhật ký</div>
+          <div class="log-stat-chip" style="border-color:rgba(168,85,247,.2);color:#c084fc"><strong>${sales}</strong> giao dịch</div>
+          <div class="log-stat-chip" style="border-color:rgba(34,197,94,.2);color:#4ade80"><strong>${today}</strong> hôm nay</div>
+          ${logs.length !== total ? `<div class="log-stat-chip" style="border-color:rgba(245,158,11,.2);color:#fbbf24"><strong>${logs.length}</strong> đang lọc</div>` : ''}
+        `;
+      }
+
+      // ── Pagination ────────────────────────────────────────
+      const totalPages = Math.max(1, Math.ceil(logs.length / LOG_PAGE_SIZE));
+      if (window._logPage > totalPages) window._logPage = totalPages;
+      const pageStart = (window._logPage - 1) * LOG_PAGE_SIZE;
+      const pageEnd   = Math.min(pageStart + LOG_PAGE_SIZE, logs.length);
+      const pageLogs  = logs.slice(pageStart, pageEnd);
+
       const container = document.getElementById('logs-container');
       if (!logs.length) {
-        container.innerHTML = `<div class="empty-state"><i data-lucide="scroll-text" class="w-10 h-10 mx-auto mb-3 opacity-30"></i><p class="text-sm">Chưa có nhật ký</p></div>`;
-        lucide.createIcons(); return;
+        container.innerHTML = `<div class="empty-state"><i data-lucide="scroll-text" class="w-10 h-10 mx-auto mb-3 opacity-30"></i><p class="text-sm">Không tìm thấy nhật ký nào</p></div>`;
+        lucide.createIcons();
+        // Clear pagination
+        const pg = document.getElementById('logs-pagination');
+        if (pg) pg.innerHTML = '';
+        return;
       }
-      container.innerHTML = logs.slice(0, 200).map(l => {
-        const roleInfo = ROLES[l.role] || { label: l.role };
-        return `<div class="log-entry">
-      <div class="flex-shrink-0 pt-1">
-        <span class="log-action-badge ${l.action}">${l.action?.toUpperCase() || 'LOG'}</span>
-      </div>
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="text-sm font-medium" style="color:var(--text-primary)">${esc(l.detail)}</span>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="text-xs" style="color:var(--text-muted)">${new Date(l.timestamp).toLocaleString('vi-VN')}</span>
-          <span class="text-xs" style="color:var(--text-muted)">•</span>
-          <span class="text-xs" style="color:var(--text-secondary)">${esc(l.userName)}</span>
-          <span class="badge ${ROLES[l.role]?.badge || 'badge-blue'}" style="font-size:10px;padding:2px 6px">${roleInfo.label}</span>
-        </div>
-      </div>
-    </div>`;
+
+      container.innerHTML = pageLogs.map(l => {
+        const roleInfo = ROLES[l.role] || { label: l.role || '?' };
+        const isSale = l.action === 'sale';
+        // Parse invoice number from sale detail: "Hóa đơn #INV-XXXX — ..."
+        const invNoMatch = isSale ? (l.detail || '').match(/(#INV-\d+)/) : null;
+        const invNo = invNoMatch ? invNoMatch[1] : null;
+
+        // Highlight search terms in detail
+        let detailHtml = esc(l.detail);
+        if (searchQ) {
+          const re = new RegExp(searchQ.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+          detailHtml = esc(l.detail).replace(re, m => `<mark class="search-highlight">${m}</mark>`);
+        }
+
+        return `<div class="log-entry ${isSale ? 'log-entry-sale' : ''}"
+            ${isSale && invNo ? `onclick="openLogInvoice('${invNo}')" title="Xem chi tiết hóa đơn ${invNo}"` : ''}>
+          <div class="flex-shrink-0 pt-1">
+            <span class="log-action-badge ${l.action}">${(l.action || 'LOG').toUpperCase()}</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span class="text-sm font-medium" style="color:var(--text-primary)">${detailHtml}</span>
+              ${isSale && invNo ? `<button class="log-view-btn" onclick="event.stopPropagation();openLogInvoice('${invNo}')">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Xem HĐ
+              </button>` : ''}
+            </div>
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs" style="color:var(--text-muted)">${new Date(l.timestamp).toLocaleString('vi-VN')}</span>
+              <span class="text-xs" style="color:var(--text-muted)">•</span>
+              <span class="text-xs" style="color:var(--text-secondary)">${esc(l.userName || 'Hệ thống')}</span>
+              <span class="badge ${ROLES[l.role]?.badge || 'badge-blue'}" style="font-size:10px;padding:2px 6px">${roleInfo.label}</span>
+            </div>
+          </div>
+        </div>`;
       }).join('');
       lucide.createIcons();
+
+      // ── Render pagination ──────────────────────────────────
+      const pgEl = document.getElementById('logs-pagination');
+      if (!pgEl) return;
+      if (totalPages <= 1) { pgEl.innerHTML = ''; return; }
+
+      let pgBtns = '';
+      // Prev
+      pgBtns += `<button class="log-pg-btn" ${window._logPage===1?'disabled':''} onclick="_logPage=${window._logPage-1};renderLogs()">‹</button>`;
+      // Page numbers (show up to 7 with ellipsis)
+      const delta = 2;
+      let pages = new Set([1, totalPages]);
+      for (let i = Math.max(2, window._logPage-delta); i <= Math.min(totalPages-1, window._logPage+delta); i++) pages.add(i);
+      pages = [...pages].sort((a,b)=>a-b);
+      let prev = 0;
+      pages.forEach(p => {
+        if (p - prev > 1) pgBtns += `<span style="color:var(--text-muted);font-size:12px;padding:0 2px">…</span>`;
+        pgBtns += `<button class="log-pg-btn ${p===window._logPage?'active':''}" onclick="_logPage=${p};renderLogs()">${p}</button>`;
+        prev = p;
+      });
+      // Next
+      pgBtns += `<button class="log-pg-btn" ${window._logPage===totalPages?'disabled':''} onclick="_logPage=${window._logPage+1};renderLogs()">›</button>`;
+
+      pgEl.innerHTML = `<div class="log-pagination">
+        <span class="text-xs" style="color:var(--text-muted)">${pageStart+1}–${pageEnd} / ${logs.length}</span>
+        ${pgBtns}
+      </div>`;
     };
 
     window.clearLogs = function () {
-      showConfirmModal('Xóa Toàn Bộ Nhật Ký', 'Toàn bộ lịch sử hành động sẽ bị xóa vĩnh viễn!', 'log', null);
+      showConfirmModal('Xóa Toàn Bộ Nhật Ký', 'Toàn bộ lịch sử hành động sẽ bị xóa vĩnh viễn (cả Firestore)!', 'log', null);
+    };
+
+    // ── Mở xem chi tiết hoá đơn từ log ─────────────────────
+    window.openLogInvoice = function (invNo) {
+      if (!invNo) return;
+      // Tìm trong AppStore.invoices (đã sync từ Firestore)
+      let inv = AppStore.invoices.find(i => i.no === invNo);
+      if (!inv) {
+        // Thử parse từ detail của chính log đó (fallback khi không có đủ data)
+        showWarning(`Không tìm thấy hóa đơn ${invNo} trong dữ liệu hiện tại.\nHóa đơn có thể đã bị xóa hoặc chưa đồng bộ.`, 'Không tìm thấy');
+        return;
+      }
+      V4Print.showPreview(inv);
     };
 
     // ══════════════════════════════════════════════════════════
@@ -4295,14 +4751,15 @@
     //  HOLD / PARK CART (Lưu tạm hóa đơn)
     // ══════════════════════════════════════════════════════════
     const HeldCarts = {
-      list: JSON.parse(localStorage.getItem('sf_held_carts') || '[]'),
-      save() { localStorage.setItem('sf_held_carts', JSON.stringify(this.list)); },
+      get list() { return AppStore.heldCarts; },
+      set list(v) { AppStore.heldCarts = v; },
+      save() { localStorage.setItem('sf_held_carts', JSON.stringify(AppStore.heldCarts)); },
     };
 
     function refreshHeldCartsBadge() {
       const btn = document.getElementById('btn-held-carts');
       const badge = document.getElementById('held-carts-badge');
-      const count = HeldCarts.list.length;
+      const count = AppStore.heldCarts.length;
       if (btn) btn.style.display = count > 0 ? '' : 'none';
       if (badge) badge.textContent = count;
       // Also update mobile held carts button
@@ -4333,6 +4790,7 @@
       HeldCarts.list.unshift(held);
       if (HeldCarts.list.length > 10) HeldCarts.list = HeldCarts.list.slice(0, 10); // max 10 holds
       HeldCarts.save();
+      saveHeldCartFS(held); // 🔥 Ghi lên Firestore
       // Clear current cart
       window.clearCart();
       refreshHeldCartsBadge();
@@ -4366,6 +4824,7 @@
       // Remove from held list
       HeldCarts.list = HeldCarts.list.filter(h => h.id !== holdId);
       HeldCarts.save();
+      deleteHeldCartFS(holdId); // 🔥 Xóa trên Firestore
       refreshHeldCartsBadge();
       renderCartItems(); recalcCart();
       closeModal('held-carts-modal');
@@ -4375,6 +4834,7 @@
     window.deleteHeldCart = function (holdId) {
       HeldCarts.list = HeldCarts.list.filter(h => h.id !== holdId);
       HeldCarts.save();
+      deleteHeldCartFS(holdId); // 🔥 Xóa trên Firestore
       refreshHeldCartsBadge();
       renderHeldCartsList();
     };
@@ -4577,6 +5037,9 @@
           });
         });
         saveExportHistory();
+        // 🔥 Ghi export history lên Firestore
+        const newHistEntries = AppStore.exportHistory.slice(0, items.length);
+        saveExportHistoryFS(newHistEntries);
 
         const invoice = {
           id: 'inv_' + Date.now(),
@@ -4590,6 +5053,10 @@
         AppStore.invoices.unshift(invoice);
         if (AppStore.invoices.length > 200) AppStore.invoices = AppStore.invoices.slice(0, 200);
         saveInvoices();
+        // 🔥 Ghi hóa đơn lên Firestore
+        await saveInvoiceFS(invoice);
+        // 🔥 Đồng bộ invoice counter lên Firestore
+        syncInvoiceCounterFS(invoiceCounter);
 
         logAction('sale', `Hóa đơn ${invNo} — ${formatCurrency(total)} — ${payMethod}`);
 
@@ -4685,7 +5152,7 @@
 
     window.clearExportHistory = function () {
       AppStore.exportHistory = [];
-      saveExportHistory();
+      clearExportHistoryFS(); // 🔥 Xóa trên Firestore
       renderHistoryTable();
       logAction('delete', 'Xóa toàn bộ lịch sử xuất kho');
       showSuccess('Đã xóa toàn bộ lịch sử xuất kho');
@@ -4746,17 +5213,20 @@
         } else if (type === 'invoice') {
           AppStore.invoices = AppStore.invoices.filter(i => i.id !== id);
           saveInvoices(); updateDashboard();
+          deleteInvoiceFS(id); // 🔥 Xóa trên Firestore
           logAction('delete', `Xóa hóa đơn ID: ${id}`);
           showSuccess('Hóa đơn đã được xóa');
         } else if (type === 'staff') {
           AppStore.staff = AppStore.staff.filter(s => s.id !== id);
-          saveStaffLocal(); renderStaffTable();
+          await deleteStaffFS(id); // 🔥 Xóa trên Firestore users
+          renderStaffTable();
           logAction('delete', `Xóa nhân viên ID: ${id}`);
           showSuccess('Nhân viên đã được xóa');
         } else if (type === 'log') {
           AppStore.logs = [];
           saveLogs(); renderLogs();
-          showSuccess('Đã xóa toàn bộ nhật ký');
+          clearLogsFS(); // 🔥 Xóa trên Firestore
+          showSuccess('Đã xóa toàn bộ nhật ký (localStorage + Firestore)');
         } else if (type === 'import_excel_replace') {
           // Excel import — replace all products
           const newProds = window._pendingExcelProducts || [];
@@ -4793,7 +5263,7 @@
           allKeys.forEach(k => { if (!keysToKeep.includes(k)) localStorage.removeItem(k); });
           AppStore.products = []; AppStore.customers = [];
           AppStore.invoices = []; AppStore.exportHistory = [];
-          AppStore.staff = []; AppStore.logs = [];
+          AppStore.staff = []; AppStore.logs = []; AppStore.heldCarts = [];
           renderCurrentPage(); updateDashboard();
           V4BackupRestore.refreshStats();
           V4OfflineCache.invalidate();
@@ -5577,7 +6047,8 @@
     // ══════════════════════════════════════════════════════════
     // ══════════════════════════════════════════════════════════
     let db = null, auth = null, isFirebaseConnected = false;
-    let unsubProducts = null, unsubCustomers = null;
+    let unsubProducts = null, unsubCustomers = null, unsubInvoices = null;
+    let unsubExportHistory = null, unsubLogs = null, unsubHeldCarts = null, unsubStaff = null;
 
     window._initFirebase = async (config) => {
       try {
@@ -5599,6 +6070,30 @@
           if (document.querySelector('#page-staff.active')) renderStaffTable();
         } catch (e) { }
 
+        // Load settings (payment config, store settings, invoice counter) from Firestore
+        try {
+          const settingsSnap = await getDoc(doc(db, 'settings', 'store'));
+          if (settingsSnap.exists()) {
+            const s = settingsSnap.data();
+            // Restore payment config
+            if (s.paymentConfig) {
+              const pc = s.paymentConfig;
+              if (pc.bank) { localStorage.setItem('sf_bank', pc.bank); document.getElementById('cfg-bank').value = pc.bank; }
+              if (pc.accountNo) { localStorage.setItem('sf_account_no', pc.accountNo); document.getElementById('cfg-account-no').value = pc.accountNo; }
+              if (pc.accountName) { localStorage.setItem('sf_account_name', pc.accountName); document.getElementById('cfg-account-name').value = pc.accountName; }
+              if (pc.transferNote) { localStorage.setItem('sf_transfer_note', pc.transferNote); document.getElementById('cfg-transfer-note').value = pc.transferNote; }
+            }
+            // Restore store info
+            if (s.storeInfo) { localStorage.setItem('sf_v4_store_info', JSON.stringify(s.storeInfo)); }
+            if (s.invoiceConfig) { localStorage.setItem('sf_v4_invoice_cfg', JSON.stringify(s.invoiceConfig)); }
+            // Restore invoice counter (use max of local and FS)
+            if (s.invoiceCounter && s.invoiceCounter > invoiceCounter) {
+              invoiceCounter = s.invoiceCounter;
+              localStorage.setItem('sf_invoice_counter', invoiceCounter);
+            }
+          }
+        } catch (e) { console.warn('Settings load error:', e); }
+
         return { ok: true };
       } catch (err) {
         return { ok: false, error: err.message };
@@ -5613,21 +6108,67 @@
     }
     function setupListeners() {
       if (!db) return;
+
+      // Products listener (existing)
       if (unsubProducts) unsubProducts();
       unsubProducts = onSnapshot(query(collection(db, 'products'), orderBy('createdAt', 'desc')), snap => {
         AppStore.products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderCurrentPage(); updateDashboard();
-        // Sau khi products được update:
-        //V4OfflineCache.warmProducts(AppStore.products);
         window.V4OfflineCache?.warmProducts(AppStore.products);
       });
+
+      // Customers listener (existing)
       if (unsubCustomers) unsubCustomers();
       unsubCustomers = onSnapshot(query(collection(db, 'customers'), orderBy('createdAt', 'desc')), snap => {
         AppStore.customers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         renderCurrentPage(); updateDashboard();
-        // Sau khi customers được update:
-        //V4OfflineCache.warmCustomers(AppStore.customers);
         window.V4OfflineCache?.warmCustomers(AppStore.customers);
+      });
+
+      // 🔥 Invoices listener — real-time
+      if (unsubInvoices) unsubInvoices();
+      unsubInvoices = onSnapshot(query(collection(db, 'invoices'), orderBy('date', 'desc'), limit(300)), snap => {
+        AppStore.invoices = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        saveInvoices(); // keep LS in sync
+        if (document.querySelector('#page-reports.active')) renderReports();
+        updateDashboard();
+      });
+
+      // 🔥 Export History listener
+      if (unsubExportHistory) unsubExportHistory();
+      unsubExportHistory = onSnapshot(query(collection(db, 'export_history'), orderBy('date', 'desc'), limit(200)), snap => {
+        AppStore.exportHistory = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        saveExportHistory();
+        if (document.querySelector('#page-inventory.active')) renderHistoryTable();
+      });
+
+      // 🔥 Logs listener
+      if (unsubLogs) unsubLogs();
+      unsubLogs = onSnapshot(query(collection(db, 'logs'), orderBy('timestamp', 'desc'), limit(1000)), snap => {
+        AppStore.logs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        saveLogs();
+        if (document.querySelector('#page-logs.active')) renderLogs();
+      });
+
+      // 🔥 Held Carts listener — filter by current user if available
+      if (unsubHeldCarts) unsubHeldCarts();
+      const uid = window.currentUser?.uid;
+      const heldCartsQuery = uid
+        ? query(collection(db, 'held_carts'), where('uid', '==', uid), orderBy('heldAt', 'desc'), limit(10))
+        : query(collection(db, 'held_carts'), orderBy('heldAt', 'desc'), limit(10));
+      unsubHeldCarts = onSnapshot(heldCartsQuery, snap => {
+        AppStore.heldCarts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        localStorage.setItem('sf_held_carts', JSON.stringify(AppStore.heldCarts));
+        refreshHeldCartsBadge();
+        if (document.querySelector('#held-carts-modal.open')) renderHeldCartsList();
+      });
+
+      // 🔥 Staff listener (users collection)
+      if (unsubStaff) unsubStaff();
+      unsubStaff = onSnapshot(collection(db, 'users'), snap => {
+        AppStore.staff = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        saveStaffLocal();
+        if (document.querySelector('#page-staff.active')) renderStaffTable();
       });
     }
 
@@ -5657,10 +6198,17 @@
     };
 
     window.savePaymentConfig = function () {
-      localStorage.setItem('sf_bank', document.getElementById('cfg-bank').value);
-      localStorage.setItem('sf_account_no', document.getElementById('cfg-account-no').value);
-      localStorage.setItem('sf_account_name', document.getElementById('cfg-account-name').value);
-      localStorage.setItem('sf_transfer_note', document.getElementById('cfg-transfer-note').value);
+      const cfg = {
+        bank: document.getElementById('cfg-bank').value,
+        accountNo: document.getElementById('cfg-account-no').value,
+        accountName: document.getElementById('cfg-account-name').value,
+        transferNote: document.getElementById('cfg-transfer-note').value,
+      };
+      localStorage.setItem('sf_bank', cfg.bank);
+      localStorage.setItem('sf_account_no', cfg.accountNo);
+      localStorage.setItem('sf_account_name', cfg.accountName);
+      localStorage.setItem('sf_transfer_note', cfg.transferNote);
+      saveSettingsFS('paymentConfig', cfg); // 🔥 Ghi lên Firestore
       showSuccess('Cấu hình thanh toán đã được lưu');
     };
 
@@ -5712,6 +6260,8 @@
       // Tên hiển thị: Họ tên > email
       const displayName = staffName || user.email || user.uid;
       enterApp(displayName, role);
+      // 🔥 Re-setup listeners now that we have uid (for held_carts filter)
+      setupListeners();
       logAction('auth', `Đăng nhập: ${user.email} — Vai trò: ${role}`);
     }
 
@@ -6001,6 +6551,7 @@
         };
         localStorage.setItem(LS_STORE, JSON.stringify(info));
         window._v4StoreInfo = info;
+        saveSettingsFS('storeInfo', info); // 🔥 Ghi lên Firestore
         _applySidebarName(info.name || 'NEO WAVE POS', info.slogan || '');
         _applyStoreInfoToSidebar(info);
         _updatePreview(info, window._v4LogoB64);
@@ -6017,6 +6568,7 @@
         };
         localStorage.setItem(LS_INVOICE, JSON.stringify(cfg));
         window._v4InvoiceCfg = cfg;
+        saveSettingsFS('invoiceConfig', cfg); // 🔥 Ghi lên Firestore
         showSuccess('Đã lưu cấu hình hóa đơn');
       }
 
@@ -6269,7 +6821,78 @@
         showInfo('Xem trước hóa đơn thử...');
       }
 
-      return { print, buildHTML, printTestInvoice, showPreview, printFromPreview };
+      // ── Xuất PNG qua html2canvas ──────────────────────────
+      async function exportPNG() {
+        if (!_previewInvoice) return;
+        if (typeof html2canvas === 'undefined') { showError('html2canvas chưa sẵn sàng, thử lại!'); return; }
+        const el = document.getElementById('invoice-preview-content');
+        if (!el) return;
+        const btnEl = document.querySelector('#invoice-preview-modal [onclick*="exportPNG"]');
+        if (btnEl) { btnEl.disabled = true; btnEl.innerHTML = `<div class="spinner" style="border-top-color:#c084fc;width:14px;height:14px;border-width:2px"></div> Đang xuất...`; }
+        try {
+          const canvas = await html2canvas(el, {
+            backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false,
+          });
+          const link = document.createElement('a');
+          const invNo = (_previewInvoice.no || 'invoice').replace(/[^a-zA-Z0-9-]/g, '');
+          link.download = `HoaDon_${invNo}_${new Date().toISOString().slice(0,10)}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          showSuccess(`Đã xuất ${_previewInvoice.no} thành file PNG`, 'Xuất thành công ✓');
+        } catch (err) { showError(`Xuất PNG lỗi: ${err.message}`); }
+        finally {
+          if (btnEl) { btnEl.disabled = false; btnEl.innerHTML = `<i data-lucide="image" class="w-4 h-4"></i> Xuất PNG`; lucide.createIcons(); }
+        }
+      }
+
+      // ── Build share text ──────────────────────────────────
+      function _buildShareText() {
+        if (!_previewInvoice) return '';
+        const inv = _previewInvoice;
+        const info = window._v4StoreInfo || {};
+        const lines = [];
+        lines.push(`🧾 *${info.name || 'NEO WAVE POS'}*`);
+        if (info.address) lines.push(`📍 ${info.address}`);
+        if (info.phone)   lines.push(`📞 ${info.phone}`);
+        lines.push(`──────────────────`);
+        lines.push(`Hóa đơn: *${inv.no}*`);
+        lines.push(`Ngày: ${new Date(inv.date).toLocaleString('vi-VN')}`);
+        lines.push(`Khách: ${inv.customerName || 'Khách lẻ'}`);
+        lines.push(`──────────────────`);
+        (inv.items || []).forEach(i => lines.push(`${i.name} ×${i.qty} = ${formatCurrency(i.price * i.qty)}`));
+        lines.push(`──────────────────`);
+        if ((inv.discount || 0) > 0) lines.push(`Giảm giá: -${formatCurrency(inv.discount)}`);
+        lines.push(`💰 Tổng: *${formatCurrency(inv.total)}*`);
+        lines.push(`Thanh toán: ${inv.payMethod}`);
+        if (info.website) lines.push(`🌐 ${info.website}`);
+        return lines.join('\n');
+      }
+
+      function shareToFacebook() {
+        const text = _buildShareText();
+        window.open(`https://www.facebook.com/sharer/sharer.php?quote=${encodeURIComponent(text)}&u=${encodeURIComponent(location.href)}`, '_blank', 'width=620,height=440');
+      }
+      function shareToZalo() {
+        // Zalo share dùng deep link
+        const text = _buildShareText();
+        window.open(`https://zalo.me/0?text=${encodeURIComponent(text)}`, '_blank', 'width=620,height=440');
+      }
+      function shareToWhatsApp() {
+        window.open(`https://wa.me/?text=${encodeURIComponent(_buildShareText())}`, '_blank', 'width=620,height=440');
+      }
+      function copyInvoiceText() {
+        const text = _buildShareText();
+        const fallback = () => {
+          const ta = Object.assign(document.createElement('textarea'), { value: text, style: 'position:fixed;opacity:0' });
+          document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+          showSuccess('Đã sao chép nội dung hóa đơn!', 'Sao chép ✓');
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => showSuccess('Đã sao chép nội dung hóa đơn!', 'Sao chép ✓')).catch(fallback);
+        else fallback();
+      }
+
+      return { print, buildHTML, printTestInvoice, showPreview, printFromPreview,
+               exportPNG, shareToFacebook, shareToZalo, shareToWhatsApp, copyInvoiceText };
     })();
 
 
@@ -6384,7 +7007,7 @@
 
       function _doImport(data) {
         V4Loading.show('Đang phục hồi dữ liệu...', 'Vui lòng không đóng trang');
-        setTimeout(() => {
+        setTimeout(async () => {
           try {
             if (data.products) { AppStore.products = data.products; }
             if (data.customers) { AppStore.customers = data.customers; }
@@ -6393,6 +7016,54 @@
             if (data.staff) { AppStore.staff = data.staff; saveStaffLocal(); }
             if (data.logs) { AppStore.logs = data.logs; saveLogs(); }
             if (data.storeInfo) { localStorage.setItem('sf_v4_store_info', JSON.stringify(data.storeInfo)); }
+
+            // 🔥 Push to Firestore if connected
+            if (db) {
+              V4Loading.show('Đang đồng bộ lên Firebase...', 'Vui lòng không đóng trang');
+              try {
+                // Products batch
+                if (data.products?.length) {
+                  const BATCH_SIZE = 400;
+                  for (let i = 0; i < data.products.length; i += BATCH_SIZE) {
+                    const batch = writeBatch(db);
+                    data.products.slice(i, i + BATCH_SIZE).forEach(p => {
+                      const { id, ...rest } = p;
+                      batch.set(doc(db, 'products', id || 'p_' + Date.now() + Math.random()), rest);
+                    });
+                    await batch.commit();
+                  }
+                }
+                // Customers batch
+                if (data.customers?.length) {
+                  const batch = writeBatch(db);
+                  data.customers.forEach(c => {
+                    const { id, ...rest } = c;
+                    batch.set(doc(db, 'customers', id || 'c_' + Date.now() + Math.random()), rest);
+                  });
+                  await batch.commit();
+                }
+                // Invoices batch
+                if (data.invoices?.length) {
+                  const BATCH_SIZE = 400;
+                  for (let i = 0; i < data.invoices.length; i += BATCH_SIZE) {
+                    const batch = writeBatch(db);
+                    data.invoices.slice(i, i + BATCH_SIZE).forEach(inv => {
+                      const { id, ...rest } = inv;
+                      batch.set(doc(db, 'invoices', id || 'inv_' + Date.now() + Math.random()), rest);
+                    });
+                    await batch.commit();
+                  }
+                }
+                // Store info
+                if (data.storeInfo) {
+                  await saveSettingsFS('storeInfo', data.storeInfo);
+                }
+                showInfo('Dữ liệu đã được đồng bộ lên Firebase');
+              } catch (fsErr) {
+                console.warn('Firebase sync during restore failed:', fsErr);
+                showWarning('Khôi phục cục bộ OK, nhưng đồng bộ Firebase gặp lỗi: ' + fsErr.message);
+              }
+            }
 
             renderCurrentPage();
             updateDashboard();
@@ -6765,6 +7436,7 @@
       V4BackupRestore.refreshStats();
 
       // Khôi phục trạng thái held carts
+      AppStore.heldCarts = JSON.parse(localStorage.getItem('sf_held_carts') || '[]');
       refreshHeldCartsBadge();
 
       // ── Lucide icons observer ──────────────────────────────
@@ -6777,24 +7449,6 @@
       _lucideObserver.observe(document.body, { childList: true, subtree: true });
       // Gọi một lần lúc khởi tạo
       lucide.createIcons();
-
-
-      // Kiểm tra các module đã load:
-      console.log(typeof V4Loading);          // "object"
-      console.log(typeof V4StoreSettings);    // "object"
-      console.log(typeof V4BackupRestore);    // "object"
-      console.log(typeof V4Print);            // "object"
-      console.log(typeof V4OfflineCache);     // "object"
-
-      // Test loading overlay:
-      // V4Loading.show('Đang test...', 'Sẽ tắt sau 2 giây');
-      // setTimeout(V4Loading.hide, 2000);
-
-      // Test export:
-      // V4BackupRestore.exportJSON();
-
-      // Test print:
-      // V4Print.printTestInvoice();
     })();
   </script>
 
